@@ -1,5 +1,6 @@
 package lab_1.utils;
 
+import lab_1.Main;
 import lab_1.model.*;
 
 import java.math.BigDecimal;
@@ -8,21 +9,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static lab_1.utils.CollectingAlgorithm.PROFIT_WEIGHT_RATIO;
+
 public class AlgorithmUtil {
 
     public final int POPULATION_SIZE;
     private final double MAX_BACKPACK_CAPACITY;
     private final double MAX_VELOCITY;
     private final double MIN_VELOCITY;
+    public final CollectingAlgorithm COLLECTING_ALGORITHM;
     private final boolean LOGGING;
     private final boolean BACKPACK_ALGORITHM_LOGGING;
     private final Configuration configuration;
 
-    public AlgorithmUtil(Configuration configuration, int POPULATION_SIZE, boolean LOGGING, boolean BACKPACK_ALGORITHM_LOGGING){
+    public AlgorithmUtil(Configuration configuration, int POPULATION_SIZE, CollectingAlgorithm algorithm, boolean LOGGING, boolean BACKPACK_ALGORITHM_LOGGING){
         this.POPULATION_SIZE = POPULATION_SIZE;
         this.MAX_BACKPACK_CAPACITY = configuration.getCapacity();
         this.MAX_VELOCITY = configuration.getMaxSpeed();
         this.MIN_VELOCITY = configuration.getMinSpeed();
+        this.COLLECTING_ALGORITHM = algorithm;
         this.LOGGING = LOGGING;
         this.BACKPACK_ALGORITHM_LOGGING = BACKPACK_ALGORITHM_LOGGING;
         this.configuration = configuration;
@@ -70,7 +75,7 @@ public class AlgorithmUtil {
                 sb.append("\n");
                 sb.append("\n");
             }
-            sb.append("indyvidual." +p);
+            sb.append("indyvidual." +p + " -");
             if(LOGGING == true){
                 sb.append(" - node order: {");
                 for (int i = 0; i < (population.get(p).getNodesOrder().length-1); i++) {
@@ -91,6 +96,7 @@ public class AlgorithmUtil {
 
             sb.append(" total time: " + round(population.get(p).getTotalTime(), 2) + ";");
             sb.append(" total profit: " + population.get(p).getTotalProfit()+ ";");
+            sb.append(" total weight: " + population.get(p).getTotalWeight()+ ";");
             sb.append(" final ratio: " + population.get(p).getFinalRatio());
             System.out.println(sb.toString());
         }
@@ -140,9 +146,23 @@ public class AlgorithmUtil {
     }
 
     public void makeDecisionAboutItem(Individual individual, Node node){
-        makeDecisionBasedOnProfitToWeightRation(individual, node);
+        switch (COLLECTING_ALGORITHM){
+            case PROFIT_WEIGHT_RATIO:
+                makeDecisionBasedOnProfitToWeightRation(individual, node);
+                break;
+            case GREEDY:
+                makeDecisionBasedOnGreedyAlgorithm(individual, node);
+                break;
+
+        }
     }
 
+
+    public void makeDecisionBasedOnGreedyAlgorithm(Individual individual, Node node){
+        if((!(node.getItems() == null)) && (!(node.getItems().isEmpty()))) {
+            individual.addItemBasedOnGreedyAlgorithm(node.getItems().get(0), MAX_BACKPACK_CAPACITY, BACKPACK_ALGORITHM_LOGGING);
+        }
+    }
 
 
     public void makeDecisionBasedOnProfitToWeightRation(Individual individual, Node node){

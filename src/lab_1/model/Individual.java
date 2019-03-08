@@ -77,7 +77,7 @@ public class Individual {
     public void addItemBasedOnProfitWeightRation(Item item, double maxCapacity, boolean logging){
         if(logging) {
             System.out.println("");
-            System.out.println("Current indyvidual's backpack capacity: " + getTotalWeight());
+            System.out.println("Current indyvidual's backpack weight: " + getTotalWeight());
             System.out.println("Current indyvidual profitWeightRation: " + getTotalProfit() / getTotalWeight());
             System.out.println("New item profitWeightRation: " + item.getProfitWeightRation());
             System.out.println("New item Weight: " + item.getWeight());
@@ -125,5 +125,31 @@ public class Individual {
             }
         }
     }
+
+
+    public void addItemBasedOnGreedyAlgorithm(Item item, double maxCapacity, boolean logging){
+        if(logging) {
+            System.out.println("");
+            System.out.println("Current indyvidual's backpack weight: " + getTotalWeight());
+            System.out.println("New item Weight: " + item.getWeight());
+        }
+        if(item.getWeight() < maxCapacity) {
+            if(item.getWeight() + getTotalWeight() < maxCapacity) {
+                if (items == null) {
+                    items = new ArrayList<Item>();
+                    items.add(item);
+                    if(logging) {
+                        System.out.println("created new items list and added item");
+                    }
+                } else {
+                    items.add(item);
+                    if(logging) {
+                        System.out.println("added item");
+                    }
+                }
+            }
+        }
+    }
+
 
 }
