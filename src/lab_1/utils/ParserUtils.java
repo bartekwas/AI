@@ -53,10 +53,10 @@ public class ParserUtils {
         configuration.setDataType(reader.readLine().replace("KNAPSACK DATA TYPE:", "").trim());
         configuration.setDimension(Integer.parseInt(reader.readLine().replace("DIMENSION:", "").trim()));
         configuration.setNumberOfItems(Integer.parseInt(reader.readLine().replace("NUMBER OF ITEMS:", "").trim()));
-        configuration.setCapacity(new BigDecimal(reader.readLine().replace("CAPACITY OF KNAPSACK:", "").trim()));
-        configuration.setMinSpeed(new BigDecimal(reader.readLine().replace("MIN SPEED:", "").trim()));
-        configuration.setMaxSpeed(new BigDecimal(reader.readLine().replace("MAX SPEED:", "").trim()));
-        configuration.setRentingRatio(new BigDecimal(reader.readLine().replace("RENTING RATIO:", "").trim()));
+        configuration.setCapacity(new Double(reader.readLine().replace("CAPACITY OF KNAPSACK:", "").trim()));
+        configuration.setMinSpeed(new Double(reader.readLine().replace("MIN SPEED:", "").trim()));
+        configuration.setMaxSpeed(new Double(reader.readLine().replace("MAX SPEED:", "").trim()));
+        configuration.setRentingRatio(new Double(reader.readLine().replace("RENTING RATIO:", "").trim()));
         configuration.setEdgeWeightType(reader.readLine().replace("EDGE_WEIGHT_TYPE:", "").trim());
 
         return configuration;

@@ -38,6 +38,10 @@ public class Item {
         this.nodeId = nodeId;
     }
 
+    public double getProfitWeightRation(){
+        return this.profit / this.weight;
+    }
+
     @Override
     public String toString() {
         return "id: " + id + " (" + "p: "+profit + ", " + "w: " +weight + ")";

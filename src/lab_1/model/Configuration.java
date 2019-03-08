@@ -12,10 +12,10 @@ public class Configuration {
     String dataType;
     int dimension;
     int numberOfItems;
-    BigDecimal capacity;
-    BigDecimal minSpeed;
-    BigDecimal maxSpeed;
-    BigDecimal rentingRatio;
+    double capacity;
+    double minSpeed;
+    double maxSpeed;
+    double rentingRatio;
     String edgeWeightType;
 
     List<Node> nodes;
@@ -52,35 +52,35 @@ public class Configuration {
         this.numberOfItems = numberOfItems;
     }
 
-    public BigDecimal getCapacity() {
+    public Double getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(BigDecimal capacity) {
+    public void setCapacity(Double capacity) {
         this.capacity = capacity;
     }
 
-    public BigDecimal getMinSpeed() {
+    public Double getMinSpeed() {
         return minSpeed;
     }
 
-    public void setMinSpeed(BigDecimal minSpeed) {
+    public void setMinSpeed(Double minSpeed) {
         this.minSpeed = minSpeed;
     }
 
-    public BigDecimal getMaxSpeed() {
+    public Double getMaxSpeed() {
         return maxSpeed;
     }
 
-    public void setMaxSpeed(BigDecimal maxSpeed) {
+    public void setMaxSpeed(Double maxSpeed) {
         this.maxSpeed = maxSpeed;
     }
 
-    public BigDecimal getRentingRatio() {
+    public Double getRentingRatio() {
         return rentingRatio;
     }
 
-    public void setRentingRatio(BigDecimal rentingRatio) {
+    public void setRentingRatio(Double rentingRatio) {
         this.rentingRatio = rentingRatio;
     }
 
