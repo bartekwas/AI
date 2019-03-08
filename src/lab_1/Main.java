@@ -10,10 +10,11 @@ public class Main {
 
     private static final String FILE_NAME = "easy_0.ttp";
     private static final String FILE_PATH = "/Users/Bartek/IdeaProjects/AI/src/lab_1/resources/zadanie1/";
-    private static final int POPULATION_SIZE = 100;
+
     private static final boolean LOGGING = false;
     private static final boolean BACKPACK_ALGORITHM_LOGGING = false;
-    public static final CollectingAlgorithm ALGORITHM = CollectingAlgorithm.PROFIT_WEIGHT_RATIO;
+    private static final int POPULATION_SIZE = 100;
+    public static final CollectingAlgorithm ALGORITHM = CollectingAlgorithm.GREEDY;
 
 
 
