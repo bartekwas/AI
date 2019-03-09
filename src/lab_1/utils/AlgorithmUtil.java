@@ -1,6 +1,5 @@
 package lab_1.utils;
 
-import lab_1.Main;
 import lab_1.model.*;
 
 import java.math.BigDecimal;
@@ -9,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static lab_1.utils.CollectingAlgorithm.PROFIT_WEIGHT_RATIO;
-
 public class AlgorithmUtil {
 
     public final int POPULATION_SIZE;
@@ -18,19 +15,17 @@ public class AlgorithmUtil {
     private final double MAX_VELOCITY;
     private final double MIN_VELOCITY;
     public final CollectingAlgorithm COLLECTING_ALGORITHM;
-    private final boolean LOGGING;
-    private final boolean BACKPACK_ALGORITHM_LOGGING;
     private final Configuration configuration;
+    private final LogWriter logWriter;
 
-    public AlgorithmUtil(Configuration configuration, int POPULATION_SIZE, CollectingAlgorithm algorithm, boolean LOGGING, boolean BACKPACK_ALGORITHM_LOGGING){
+    public AlgorithmUtil(Configuration configuration, int POPULATION_SIZE, CollectingAlgorithm algorithm, LogWriter logWriter){
         this.POPULATION_SIZE = POPULATION_SIZE;
         this.MAX_BACKPACK_CAPACITY = configuration.getCapacity();
         this.MAX_VELOCITY = configuration.getMaxSpeed();
         this.MIN_VELOCITY = configuration.getMinSpeed();
         this.COLLECTING_ALGORITHM = algorithm;
-        this.LOGGING = LOGGING;
-        this.BACKPACK_ALGORITHM_LOGGING = BACKPACK_ALGORITHM_LOGGING;
         this.configuration = configuration;
+        this.logWriter = logWriter;
     }
 
 
@@ -41,6 +36,7 @@ public class AlgorithmUtil {
         assessPopulation(population);
 
         displayPopulation(population);
+        logWriter.makeCSVWholePopulation(population);
     }
 
 
@@ -70,35 +66,40 @@ public class AlgorithmUtil {
         System.out.println("Assessment results: ");
         for (int p=0; p<population.size(); p++) {
             StringBuilder sb = new StringBuilder();
-            if(LOGGING){
-                sb.append("\n");
-                sb.append("\n");
-                sb.append("\n");
-            }
+            StringBuilder sbLogs = new StringBuilder();
+            sbLogs.append("\n");
+            sbLogs.append("\n");
+            sbLogs.append("\n");
             sb.append("indyvidual." +p + " -");
-            if(LOGGING == true){
-                sb.append(" - node order: {");
-                for (int i = 0; i < (population.get(p).getNodesOrder().length-1); i++) {
-                    sb.append(population.get(p).getNodesOrder()[i].getId());
-                    sb.append(" ");
-                }
-                sb.append("}");
-                sb.append("\n");
-                sb.append(" items collected: {");
-                for (int i =0; i<population.get(p).getItems().size(); i++){
-                    sb.append("\n");
-                    sb.append("p:" +population.get(p).getItems().get(i).getProfit());
-                    sb.append(", w:" +population.get(p).getItems().get(i).getWeight());
-                }
-                sb.append(" }");
-                sb.append("\n");
+            sb.append("indyvidual." +p + " -");
+
+            sbLogs.append(" - node order: {");
+            for (int i = 0; i < (population.get(p).getNodesOrder().length-1); i++) {
+                sbLogs.append(population.get(p).getNodesOrder()[i].getId());
+                sbLogs.append(" ");
             }
+            sbLogs.append("}");
+            sbLogs.append("\n");
+            sbLogs.append(" items collected: {");
+            for (int i =0; i<population.get(p).getItems().size(); i++){
+                sbLogs.append("\n");
+                sbLogs.append("p:" +population.get(p).getItems().get(i).getProfit());
+                sbLogs.append(", w:" +population.get(p).getItems().get(i).getWeight());
+            }
+            sbLogs.append(" }");
+            sbLogs.append("\n");
+
 
             sb.append(" total time: " + round(population.get(p).getTotalTime(), 2) + ";");
             sb.append(" total profit: " + population.get(p).getTotalProfit()+ ";");
             sb.append(" total weight: " + population.get(p).getTotalWeight()+ ";");
             sb.append(" final ratio: " + population.get(p).getFinalRatio());
+            sbLogs.append(" total time: " + round(population.get(p).getTotalTime(), 2) + ";");
+            sbLogs.append(" total profit: " + population.get(p).getTotalProfit()+ ";");
+            sbLogs.append(" total weight: " + population.get(p).getTotalWeight()+ ";");
+            sbLogs.append(" final ratio: " + population.get(p).getFinalRatio());
             System.out.println(sb.toString());
+            logWriter.writeToLog(sbLogs.toString());
         }
     }
 
@@ -160,7 +161,7 @@ public class AlgorithmUtil {
 
     public void makeDecisionBasedOnGreedyAlgorithm(Individual individual, Node node){
         if((!(node.getItems() == null)) && (!(node.getItems().isEmpty()))) {
-            individual.addItemBasedOnGreedyAlgorithm(node.getItems().get(0), MAX_BACKPACK_CAPACITY, BACKPACK_ALGORITHM_LOGGING);
+            individual.addItemBasedOnGreedyAlgorithm(node.getItems().get(0), MAX_BACKPACK_CAPACITY, logWriter);
         }
     }
 
@@ -177,7 +178,7 @@ public class AlgorithmUtil {
             Item item = node.getItems().get(0);
             nodeProfitWeightRation = item.getProfitWeightRation();
             if (indywidualAveregeProfitWeightRation < nodeProfitWeightRation) {
-                individual.addItemBasedOnProfitWeightRation(item, MAX_BACKPACK_CAPACITY, BACKPACK_ALGORITHM_LOGGING);
+                individual.addItemBasedOnProfitWeightRation(item, MAX_BACKPACK_CAPACITY, logWriter);
             }
         }
     }

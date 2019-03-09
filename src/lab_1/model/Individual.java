@@ -1,14 +1,16 @@
 package lab_1.model;
 
+import lab_1.utils.LogWriter;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 
 public class Individual {
 
     private Node[] nodesOrder;
     private ArrayList<Item> items;
     private double totalDistance;
+    private double finalRatio;
+    private double totalTime;
 
     public double getFinalRatio() {
         return finalRatio;
@@ -18,8 +20,6 @@ public class Individual {
         this.finalRatio = finalRatio;
     }
 
-    private double finalRatio;
-
     public double getTotalTime() {
         return totalTime;
     }
@@ -27,8 +27,6 @@ public class Individual {
     public void setTotalTime(double totalTime) {
         this.totalTime = totalTime;
     }
-
-    private double totalTime;
 
     public Individual(Node [] nodesOrder){
         this.nodesOrder = nodesOrder;
@@ -74,81 +72,86 @@ public class Individual {
         }
     }
 
-    public void addItemBasedOnProfitWeightRation(Item item, double maxCapacity, boolean logging){
-        if(logging) {
-            System.out.println("");
-            System.out.println("Current indyvidual's backpack weight: " + getTotalWeight());
-            System.out.println("Current indyvidual profitWeightRation: " + getTotalProfit() / getTotalWeight());
-            System.out.println("New item profitWeightRation: " + item.getProfitWeightRation());
-            System.out.println("New item Weight: " + item.getWeight());
-        }
+    public void addItemBasedOnProfitWeightRation(Item item, double maxCapacity, LogWriter logWriter){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\n");
+        sb.append("Current indyvidual's backpack weight: " + getTotalWeight());
+        sb.append("\n");
+        sb.append("Current indyvidual profitWeightRation: " + getTotalProfit() / getTotalWeight());
+        sb.append("\n");
+        sb.append("New item profitWeightRation: " + item.getProfitWeightRation());
+        sb.append("\n");
+        sb.append("New item Weight: " + item.getWeight());
+
         if (item.getWeight() <= maxCapacity) {
             if (getTotalWeight() + item.getWeight() <= maxCapacity) {
                 if (items == null) {
                     items = new ArrayList<Item>();
                     items.add(item);
-                    if (logging) {
-                        System.out.println("created new list and added item to empty list");
-                        System.out.println("");
-                    }
+
+                    sb.append("created new list and added item to empty list");
+                    sb.append("\n");
+
                 } else {
                     if (items.isEmpty()) {
                         items.add(item);
-                        if (logging) {
-                            System.out.println("added item to empty list");
-                            System.out.println("");
-                        }
+
+                        sb.append("added item to empty list");
+                        sb.append("\n");
+
                     } else {
                         for (int i = 0; i < items.size(); i++) {
-                            if(logging) {
-                                System.out.println("current list ration: " + items.get(i).getProfitWeightRation());
-                            }
+
+                            sb.append("current list ration: " + items.get(i).getProfitWeightRation());
+                            sb.append("\n");
+
                             if (item.getProfitWeightRation() > items.get(i).getProfitWeightRation()) {
                                 items.add(i, item);
-                                if (logging) {
-                                    System.out.println("added item to list " + item.getProfitWeightRation());
-                                    System.out.println("");
-                                }
+                                sb.append("added item to list " + item.getProfitWeightRation());
+                                sb.append("\n");
                                 break;
                             }
                         }
                     }
                 }
             } else {
-                if (logging) {
-                    System.out.println("current capacity" + getTotalWeight());
-                    System.out.println("removing worst one");
-                    System.out.println("");
-                }
+
+                sb.append("current capacity" + getTotalWeight());
+                sb.append("removing worst one");
+                sb.append("\n");
                 items.remove(items.size() - 1);
-                addItemBasedOnProfitWeightRation(item, maxCapacity, logging);
+                addItemBasedOnProfitWeightRation(item, maxCapacity, logWriter);
             }
         }
+        logWriter.writeToLog(sb.toString());
     }
 
 
-    public void addItemBasedOnGreedyAlgorithm(Item item, double maxCapacity, boolean logging){
-        if(logging) {
-            System.out.println("");
-            System.out.println("Current indyvidual's backpack weight: " + getTotalWeight());
-            System.out.println("New item Weight: " + item.getWeight());
-        }
+    public void addItemBasedOnGreedyAlgorithm(Item item, double maxCapacity, LogWriter logWriter){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\n");
+        sb.append("Current indyvidual's backpack weight: " + getTotalWeight());
+        sb.append("New item Weight: " + item.getWeight());
+
         if(item.getWeight() < maxCapacity) {
             if(item.getWeight() + getTotalWeight() < maxCapacity) {
                 if (items == null) {
                     items = new ArrayList<Item>();
                     items.add(item);
-                    if(logging) {
-                        System.out.println("created new items list and added item");
-                    }
+
+                    sb.append("created new items list and added item");
+                    sb.append("\n");
+
                 } else {
                     items.add(item);
-                    if(logging) {
-                        System.out.println("added item");
-                    }
+                    sb.append("added item");
+                    sb.append("\n");
                 }
             }
         }
+        logWriter.writeToLog(sb.toString());
     }
 
 
