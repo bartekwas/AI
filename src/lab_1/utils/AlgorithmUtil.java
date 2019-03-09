@@ -7,6 +7,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class AlgorithmUtil {
 
@@ -15,21 +16,35 @@ public class AlgorithmUtil {
     private final double MAX_VELOCITY;
     private final double MIN_VELOCITY;
     public final CollectingAlgorithm COLLECTING_ALGORITHM;
+    public final ParentsChooseAlgorithm PARENTS_CHOOSE_ALGORITHM;
     private final Configuration configuration;
     private final LogWriter logWriter;
+    private final int ITERATIONS;
 
-    public AlgorithmUtil(Configuration configuration, int POPULATION_SIZE, CollectingAlgorithm algorithm, LogWriter logWriter){
+    public AlgorithmUtil(Configuration configuration, int POPULATION_SIZE, CollectingAlgorithm collectingAlgorithm, ParentsChooseAlgorithm parentsChooseAlgorithm, int iterations, LogWriter logWriter){
         this.POPULATION_SIZE = POPULATION_SIZE;
         this.MAX_BACKPACK_CAPACITY = configuration.getCapacity();
         this.MAX_VELOCITY = configuration.getMaxSpeed();
         this.MIN_VELOCITY = configuration.getMinSpeed();
-        this.COLLECTING_ALGORITHM = algorithm;
+        this.COLLECTING_ALGORITHM = collectingAlgorithm;
+        this.PARENTS_CHOOSE_ALGORITHM = parentsChooseAlgorithm;
         this.configuration = configuration;
         this.logWriter = logWriter;
+        this.ITERATIONS = iterations;
     }
 
 
     public void initialiazeGeneticAlgorithm(){
+        ArrayList<Individual> randomChoosenPopulation = createFirstPopulation();
+        ArrayList<Individual> nextPopulation = randomChoosenPopulation;
+        for(int i = 0; i<ITERATIONS; i++) {
+            nextPopulation = createNewPopulation(nextPopulation);
+            assessPopulation(nextPopulation);
+            logWriter.makeCSVWholePopulation(nextPopulation);
+        }
+    }
+
+    public ArrayList<Individual> createFirstPopulation(){
         Node[] allNodes = new Node[configuration.getNodes().size()];
         configuration.getNodes().toArray(allNodes);
         ArrayList<Individual> population = createPopulation(allNodes);
@@ -37,6 +52,8 @@ public class AlgorithmUtil {
 
         displayPopulation(population);
         logWriter.makeCSVWholePopulation(population);
+
+        return population;
     }
 
 
@@ -44,10 +61,10 @@ public class AlgorithmUtil {
         Node[] randomNodes = new Node[allNodes.length];
         Node[] allNodesCopy = Arrays.copyOf(allNodes, allNodes.length);
         int range = allNodesCopy.length-1;
-        for(int i =0; i<allNodesCopy.length-1; i++){
-            int random = (int)(Math.random()*(range+1));
+        for(int i =0; i<allNodesCopy.length; i++){
+            int random = (int)(Math.random()*(range));
             randomNodes[i] = allNodesCopy[random];
-            allNodesCopy[random]=allNodesCopy[range-1];
+            allNodesCopy[random]=allNodesCopy[range];
             range--;
         }
         return randomNodes;
@@ -194,6 +211,151 @@ public class AlgorithmUtil {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    private ArrayList<Individual> createNewPopulation(ArrayList<Individual> previousPopulation){
+        ArrayList<Individual> newPopulation = new ArrayList<>();
+
+        for(int i =0; i<previousPopulation.size()/2; i++) {
+            ArrayList<Individual> parents = chooseParents(previousPopulation);
+            parents = makeCrossOver(parents);
+            newPopulation.add(parents.get(0));
+            newPopulation.add(parents.get(1));
+        }
+        return newPopulation;
+    }
+
+
+    private ArrayList<Individual> makeCrossOver(ArrayList<Individual> parents){
+        Node [] allNodes = parents.get(0).getNodesOrder();
+
+        int halfSize = parents.get(0).getNodesOrder().length/2;
+
+        Individual parent1 = parents.get(0);
+        Individual parent2 = parents.get(1);
+
+        ArrayList<Node> parent1Nodes = new ArrayList<Node>();
+        ArrayList<Node> parent2Nodes = new ArrayList<Node>();
+
+        for(int i=0; i<halfSize; i++){
+            parent1Nodes.add(parent1.getNodesOrder()[i]);
+            parent2Nodes.add(parent2.getNodesOrder()[i]);
+        }
+
+        for(int i = halfSize; i<parent1.getNodesOrder().length; i++){
+            parent1Nodes.add(parent2.getNodesOrder()[i]);
+            parent2Nodes.add(parent1.getNodesOrder()[i]);
+        }
+
+
+        parent1Nodes = fixIndyvidualsAfterCrossOver(parent1Nodes, allNodes);
+        parent2Nodes = fixIndyvidualsAfterCrossOver(parent2Nodes, allNodes);
+
+        Individual newParent1 = new Individual(parent1Nodes.toArray(new Node[parent1Nodes.size()]));
+        Individual newParent2 = new Individual(parent2Nodes.toArray(new Node[parent2Nodes.size()]));
+        parents.clear();
+        parents.add(newParent1);
+        parents.add(newParent2);
+        return parents;
+    }
+
+    private ArrayList<Node> fixIndyvidualsAfterCrossOver(ArrayList<Node> nodesOrderToFix, Node [] allNodes){
+        ArrayList<Node> missingNodes = findMissingNodes(allNodes, nodesOrderToFix);
+        ArrayList<Node> duplicatedNodes = findDuplicatedNodes(nodesOrderToFix);
+        ArrayList<Node> correctNodes = new ArrayList<>();
+        int lastPosition = missingNodes.size()-1;
+        for (Node nodeToFix : nodesOrderToFix){
+            boolean duplicationFound = false;
+            for(Iterator<Node> iterator = duplicatedNodes.iterator(); iterator.hasNext();){
+                Node duplicatedNode = iterator.next();
+                if (nodeToFix.getId().equals(duplicatedNode.getId())){
+                    correctNodes.add(missingNodes.get(lastPosition--));
+                    iterator.remove();
+                    duplicationFound = true;
+                }
+            }
+            if(!duplicationFound) {
+                correctNodes.add(nodeToFix);
+            }
+        }
+        return correctNodes;
+    }
+
+
+    public ArrayList<Node> findMissingNodes(Node [] allNodes,ArrayList<Node> nodesOrderToFix){
+        ArrayList<Node> missingNodes = new ArrayList<Node>();
+        for(Node node: allNodes){
+            boolean alreadyExist = false;
+            for(Node nodeToFix: nodesOrderToFix){
+                String n1Id = nodeToFix.getId();
+                String n2Id = node.getId();
+                if(nodeToFix.getId().equals(node.getId())){
+                    alreadyExist = true;
+                    break;
+                }
+            }
+            if (!alreadyExist){
+                missingNodes.add(node);
+            }
+        }
+        return missingNodes;
+    }
+
+    public ArrayList<Node> findDuplicatedNodes(ArrayList<Node> nodesOrderToFix){
+        ArrayList<Node> uniqueNodes = new ArrayList<>();
+        ArrayList<Node> duplicatedNodes = new ArrayList<>();
+        for(Node nodeToFix : nodesOrderToFix){
+            for(Node uniqueNode : uniqueNodes){
+                if(nodeToFix.getId().equals(uniqueNode.getId())){
+                    duplicatedNodes.add(nodeToFix);
+                    break;
+                }
+            }
+            uniqueNodes.add(nodeToFix);
+        }
+        return duplicatedNodes;
+    }
+
+
+
+    private ArrayList<Individual> chooseParents(ArrayList<Individual> population){
+        switch (PARENTS_CHOOSE_ALGORITHM){
+            case TOURNAMENT:
+                return chooseParentsBasedOnTournament(population);
+            case ROULTETTE:
+                return chooseParentsBasedOnRoulette(population);
+            default:
+                return null;
+        }
+    }
+
+    private ArrayList<Individual> chooseParentsBasedOnTournament(ArrayList<Individual> population){
+        ArrayList<Individual> parents = new ArrayList<>();
+        for(int i = 0; i<2; i++) {
+            ArrayList<Individual> randomFifeIndyviduals = chooseNRandomIndyviduals(5, population);
+            sortPopulation(randomFifeIndyviduals);
+            parents.add(randomFifeIndyviduals.get(0));
+        }
+        return parents;
+    }
+
+    private ArrayList<Individual> chooseNRandomIndyviduals(int n, ArrayList<Individual> popultaion){
+
+        Individual[] randomIndividuals = new Individual[n];
+        Individual[] allIndividualCopy = popultaion.toArray(new Individual[popultaion.size()]);
+        int range = allIndividualCopy.length-1;
+        for(int i =0; i<n; i++){
+            int random = (int)(Math.random()*(range+1));
+            randomIndividuals[i] = allIndividualCopy[random];
+            allIndividualCopy[random]=allIndividualCopy[range-1];
+            range--;
+        }
+        return new ArrayList<>(Arrays.asList(randomIndividuals));
+    }
+
+
+    private ArrayList<Individual> chooseParentsBasedOnRoulette(ArrayList<Individual> population){
+        return null;
     }
 
 

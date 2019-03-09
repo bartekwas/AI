@@ -31,7 +31,6 @@ public class Individual {
     public Individual(Node [] nodesOrder){
         this.nodesOrder = nodesOrder;
     }
-
     public Node[] getNodesOrder() {
         return nodesOrder;
     }

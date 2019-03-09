@@ -17,6 +17,7 @@ public class LogWriter {
     private final File CSV_FILE_WHOLE_POPULATION;
     private final File LOG_FILE;
     private final File CSV_FILE_BEST;
+    private int counter = 1;
 
     public LogWriter(Configuration configuration){
         PROBLEM_NAME = configuration.getProblemName();
@@ -29,6 +30,15 @@ public class LogWriter {
         LOG_FILE = new File(FINAL_FILE_PATH+LOG_NAME);
         CSV_FILE_BEST = new File(FINAL_FILE_PATH+CSV_NAME_BEST);
         clearLogs();
+        initializeLogFile();
+
+
+    }
+
+    public void initializeLogFile(){
+        String result = "";
+        result += makeCSVColumn();
+        writeOutput(result, CSV_NAME_WHOLE_POPULATION);
     }
 
 
@@ -44,7 +54,6 @@ public class LogWriter {
 
     public void makeCSVWholePopulation(ArrayList<Individual> population){
         String result = "";
-        result += makeCSVColumn();
         result += makeCSVLines(population);
         writeOutput(result, CSV_NAME_WHOLE_POPULATION);
     }
@@ -58,6 +67,8 @@ public class LogWriter {
         String semicolon = ";";
 
         StringBuilder builder = new StringBuilder();
+        builder.append("L.p.");
+        builder.append(semicolon);
         builder.append("Final ratio");
         builder.append(semicolon);
         builder.append("Overall distance");
@@ -81,15 +92,29 @@ public class LogWriter {
 
         for (Individual indyvidual:population
         ) {
-            builder.append(indyvidual.getFinalRatio());
+            String finalRatio = String.valueOf(indyvidual.getFinalRatio());
+            finalRatio =finalRatio.replace(".", ",");
+
+            String totalTime = String.valueOf(indyvidual.getTotalTime());
+            totalTime =totalTime.replace(".", ",");
+
+            String totalProfit = String.valueOf(indyvidual.getTotalProfit());
+            totalProfit =totalProfit.replace(".", ",");
+
+            String totalWeight = String.valueOf(indyvidual.getTotalWeight());
+            totalWeight =totalWeight.replace(".", ",");
+
+            builder.append(counter++);
+            builder.append(semicolon);
+            builder.append(finalRatio);
             builder.append(semicolon);
             builder.append(indyvidual.getTotalDistance());
             builder.append(semicolon);
-            builder.append(indyvidual.getTotalTime());
+            builder.append(totalTime);
             builder.append(semicolon);
-            builder.append(indyvidual.getTotalProfit());
+            builder.append(totalProfit);
             builder.append(semicolon);
-            builder.append(indyvidual.getTotalWeight());
+            builder.append(totalWeight);
             builder.append(semicolon);
             builder.append("\n");
         }
@@ -99,7 +124,7 @@ public class LogWriter {
     public void writeOutput(String log, String fileName){
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(FINAL_FILE_PATH+fileName, true)));
-            out.println(log);
+            out.print(log);
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
