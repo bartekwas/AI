@@ -20,8 +20,9 @@ public class AlgorithmUtil {
     private final Configuration configuration;
     private final LogWriter logWriter;
     private final int ITERATIONS;
+    private final int BEST_RESULTS_ON_DIAGRAM;
 
-    public AlgorithmUtil(Configuration configuration, int POPULATION_SIZE, CollectingAlgorithm collectingAlgorithm, ParentsChooseAlgorithm parentsChooseAlgorithm, int iterations, LogWriter logWriter){
+    public AlgorithmUtil(Configuration configuration, int POPULATION_SIZE, CollectingAlgorithm collectingAlgorithm, ParentsChooseAlgorithm parentsChooseAlgorithm, int iterations, int best_results, LogWriter logWriter){
         this.POPULATION_SIZE = POPULATION_SIZE;
         this.MAX_BACKPACK_CAPACITY = configuration.getCapacity();
         this.MAX_VELOCITY = configuration.getMaxSpeed();
@@ -31,6 +32,7 @@ public class AlgorithmUtil {
         this.configuration = configuration;
         this.logWriter = logWriter;
         this.ITERATIONS = iterations;
+        this.BEST_RESULTS_ON_DIAGRAM = best_results;
     }
 
 
@@ -41,6 +43,7 @@ public class AlgorithmUtil {
             nextPopulation = createNewPopulation(nextPopulation);
             assessPopulation(nextPopulation);
             logWriter.makeCSVWholePopulation(nextPopulation);
+            logBestResult(nextPopulation);
         }
     }
 
@@ -50,10 +53,23 @@ public class AlgorithmUtil {
         ArrayList<Individual> population = createPopulation(allNodes);
         assessPopulation(population);
 
-        displayPopulation(population);
         logWriter.makeCSVWholePopulation(population);
+        logBestResult(population);
+
+        displayPopulation(population);
+
 
         return population;
+    }
+
+    public void logBestResult(ArrayList<Individual> population){
+        population = sortPopulation(population);
+        ArrayList<Individual> bestIndyviduals = new ArrayList<>();
+        for(int i = 0; i<BEST_RESULTS_ON_DIAGRAM; i++){
+            bestIndyviduals.add(population.get(i));
+        }
+
+        logWriter.addBestResult(bestIndyviduals);
     }
 
 
@@ -79,7 +95,6 @@ public class AlgorithmUtil {
     }
 
     public void displayPopulation(ArrayList<Individual> population){
-        population = sortPopulation(population);
         System.out.println("Assessment results: ");
         for (int p=0; p<population.size(); p++) {
             StringBuilder sb = new StringBuilder();

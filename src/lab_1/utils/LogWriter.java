@@ -17,7 +17,8 @@ public class LogWriter {
     private final File CSV_FILE_WHOLE_POPULATION;
     private final File LOG_FILE;
     private final File CSV_FILE_BEST;
-    private int counter = 1;
+    private int counter_whole = 1;
+    private int counter_best = 1;
 
     public LogWriter(Configuration configuration){
         PROBLEM_NAME = configuration.getProblemName();
@@ -39,14 +40,14 @@ public class LogWriter {
         String result = "";
         result += makeCSVColumn();
         writeOutput(result, CSV_NAME_WHOLE_POPULATION);
+        writeOutput(result, CSV_NAME_BEST);
     }
 
 
 
     public void addBestResult(ArrayList<Individual> population){
         String result = "";
-        result += makeCSVColumn();
-        result += makeCSVLines(population);
+        result += makeCSVLines(population, true);
         writeOutput(result, CSV_NAME_BEST);
     }
 
@@ -54,7 +55,7 @@ public class LogWriter {
 
     public void makeCSVWholePopulation(ArrayList<Individual> population){
         String result = "";
-        result += makeCSVLines(population);
+        result += makeCSVLines(population, false);
         writeOutput(result, CSV_NAME_WHOLE_POPULATION);
     }
 
@@ -84,7 +85,7 @@ public class LogWriter {
         return builder.toString();
     }
 
-    public String makeCSVLines(ArrayList<Individual> population) {
+    public String makeCSVLines(ArrayList<Individual> population, boolean best) {
 
         String semicolon = ";";
 
@@ -102,9 +103,13 @@ public class LogWriter {
             totalProfit =totalProfit.replace(".", ",");
 
             String totalWeight = String.valueOf(indyvidual.getTotalWeight());
-            totalWeight =totalWeight.replace(".", ",");
+            totalWeight =totalWeight.replace(".",   ",");
 
-            builder.append(counter++);
+            if(best){
+                builder.append(counter_best++);
+            } else {
+                builder.append(counter_whole++);
+            }
             builder.append(semicolon);
             builder.append(finalRatio);
             builder.append(semicolon);
