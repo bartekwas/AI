@@ -4,10 +4,7 @@ import lab_1.model.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.*;
 
 public class AlgorithmUtil {
 
@@ -21,6 +18,7 @@ public class AlgorithmUtil {
     private final LogWriter logWriter;
     private final int ITERATIONS;
     private final int BEST_RESULTS_ON_DIAGRAM;
+    private ArrayList<Double> bestRatios;
 
     public AlgorithmUtil(Configuration configuration, int POPULATION_SIZE, CollectingAlgorithm collectingAlgorithm, ParentsChooseAlgorithm parentsChooseAlgorithm, int iterations, int best_results, LogWriter logWriter){
         this.POPULATION_SIZE = POPULATION_SIZE;
@@ -33,18 +31,22 @@ public class AlgorithmUtil {
         this.logWriter = logWriter;
         this.ITERATIONS = iterations;
         this.BEST_RESULTS_ON_DIAGRAM = best_results;
+        bestRatios = new ArrayList<Double>();
     }
 
 
-    public void initialiazeGeneticAlgorithm(){
+    public ArrayList<Double> initialiazeGeneticAlgorithm(){
         ArrayList<Individual> randomChoosenPopulation = createFirstPopulation();
         ArrayList<Individual> nextPopulation = randomChoosenPopulation;
         for(int i = 0; i<ITERATIONS; i++) {
             nextPopulation = createNewPopulation(nextPopulation);
             assessPopulation(nextPopulation);
-            logWriter.makeCSVWholePopulation(nextPopulation);
-            logBestResult(nextPopulation);
+            OptionalDouble best = nextPopulation.stream().mapToDouble(p -> p.getFinalRatio()).max();
+            bestRatios.add(best.getAsDouble());
+            //logWriter.makeCSVWholePopulation(nextPopulation);
+            //logBestResult(nextPopulation);
         }
+        return bestRatios;
     }
 
     public ArrayList<Individual> createFirstPopulation(){
@@ -53,7 +55,7 @@ public class AlgorithmUtil {
         ArrayList<Individual> population = createPopulation(allNodes);
         assessPopulation(population);
 
-        logWriter.makeCSVWholePopulation(population);
+        //logWriter.makeCSVWholePopulation(population);
         logBestResult(population);
 
         displayPopulation(population);
@@ -69,7 +71,7 @@ public class AlgorithmUtil {
             bestIndyviduals.add(population.get(i));
         }
 
-        logWriter.addBestResult(bestIndyviduals);
+        //logWriter.addBestResult(bestIndyviduals);
     }
 
 
@@ -131,7 +133,7 @@ public class AlgorithmUtil {
             sbLogs.append(" total weight: " + population.get(p).getTotalWeight()+ ";");
             sbLogs.append(" final ratio: " + population.get(p).getFinalRatio());
             System.out.println(sb.toString());
-            logWriter.writeToLog(sbLogs.toString());
+            //logWriter.writeToLog(sbLogs.toString());
         }
     }
 
@@ -234,6 +236,7 @@ public class AlgorithmUtil {
         for(int i =0; i<previousPopulation.size()/2; i++) {
             ArrayList<Individual> parents = chooseParents(previousPopulation);
             parents = makeCrossOver(parents);
+            //parents = mutateParents(parents);
             newPopulation.add(parents.get(0));
             newPopulation.add(parents.get(1));
         }
@@ -294,6 +297,36 @@ public class AlgorithmUtil {
             }
         }
         return correctNodes;
+    }
+
+    private ArrayList<Individual> mutateParents(ArrayList<Individual> parents){
+        Node[] parent1Nodes = parents.get(0).getNodesOrder();
+        Node[] parent2Nodes = parents.get(1).getNodesOrder();
+
+        parent1Nodes = mutate(parent1Nodes);
+        parent2Nodes = mutate(parent2Nodes);
+
+        parents.get(0).setNodesOrder(parent1Nodes);
+        parents.get(1).setNodesOrder(parent2Nodes);
+
+        return parents;
+
+    }
+
+    private Node[] mutate(Node[] nodes){
+        int nodeSize = nodes.length;
+
+        for (int i = 0; i< nodeSize*0.05; i++){
+            int random1 = (int)(Math.random()*(nodeSize));
+            int random2 = (int)(Math.random()*(nodeSize));
+
+            Node node1 = nodes[random1];
+            Node node2 = nodes[random2];
+
+            nodes[random1] = node2;
+            nodes[random2] = node1;
+        }
+        return nodes;
     }
 
 
