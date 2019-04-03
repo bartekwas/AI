@@ -15,10 +15,10 @@ public class Main {
 
     private static final String FILE_NAME = "easy_0.ttp";
     private static final String FILE_PATH = "/Users/Bartek/IdeaProjects/AI/src/lab_1/resources/zadanie1/";
-    private static final String[] allFiles = new String[]{"trivial_0.ttp", "trivial_1.ttp", "easy_0.ttp", "easy_1.ttp", "easy_2.ttp", "easy_3.ttp", "easy_4.ttp", "medium_0.ttp", "medium_1.ttp", "medium_2.ttp", "medium_3.ttp", "medium_4.ttp", "hard_0.ttp",  "hard_1.ttp",  "hard_2.ttp",  "hard_3.ttp",  "hard_4.ttp"};
+    private static final String[] allFiles = new String[]{"trivial_0.ttp"}; //"trivial_1.ttp", "easy_0.ttp", "easy_1.ttp", "easy_2.ttp", "easy_3.ttp", "easy_4.ttp", "medium_0.ttp", "medium_1.ttp", "medium_2.ttp", "medium_3.ttp", "medium_4.ttp", "hard_0.ttp",  "hard_1.ttp",  "hard_2.ttp",  "hard_3.ttp",  "hard_4.ttp"};
     private static final int POPULATION_SIZE = 100;
     private static final int ITERATIONS = 200;
-    private static final int BEST_RESULTS_ON_DIAGRAM = 4;
+    private static final int BEST_RESULTS_ON_DIAGRAM = 1;
 
     public static final CollectingAlgorithm COLLECTIONG_ALGORITHM = CollectingAlgorithm.PROFIT_WEIGHT_RATIO;
     public static final ParentsChooseAlgorithm PARENTS_CHOOSE_ALGORITHM = ParentsChooseAlgorithm.TOURNAMENT;
@@ -31,7 +31,7 @@ public class Main {
         bestsOfAll = new ArrayList<>();
 
         for(String file : allFiles) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 10; i++) {
                 bestsOfAll.add(runAlgorithm(file));
             }
             saveResults(file, bestsOfAll);
