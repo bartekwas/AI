@@ -1,7 +1,7 @@
 package lab_2.zad2;
 
 import lab_2.zad1.Problem;
-import lab_2.zad1.QueensProblemSolver;
+import lab_2.zad1.Solver;
 
 public class App {
 
@@ -10,8 +10,8 @@ public class App {
 
     public static void main(String[] args){
 
-        QueensProblemSolver queensProblemSolver = new QueensProblemSolver(SIZE, problem);
-        queensProblemSolver.solveQueensProblem();
+        Solver solver = new Solver(SIZE, problem);
+        solver.solveProblemBackwardsChecking();
     }
 
 
