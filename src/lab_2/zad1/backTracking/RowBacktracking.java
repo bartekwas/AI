@@ -1,8 +1,10 @@
-package lab_2.zad1;
+package lab_2.zad1.backTracking;
+
+import lab_2.zad1.NoMorePossibleFieldException;
 
 import java.util.ArrayList;
 
-public class Row {
+public class RowBacktracking {
     private int columnCounter = 0;
     public Integer field;
     public Integer[] valuesOnFields;
@@ -10,7 +12,7 @@ public class Row {
     public ArrayList<Integer> takenFields;
 
 
-    public Row(int size){
+    public RowBacktracking(int size){
         availableFields = new ArrayList<>();
         takenFields = new ArrayList<>();
         valuesOnFields = new Integer[size];
@@ -36,7 +38,7 @@ public class Row {
         valuesOnFields[field] = null;
     }
 
-    public Integer getNextPossibleField() throws NoMorePossibleFieldException{
+    public Integer getNextPossibleField() throws NoMorePossibleFieldException {
         try {
             return availableFields.get(columnCounter++);
         }catch (IndexOutOfBoundsException ex){

@@ -1,8 +1,10 @@
-package lab_2.zad1;
+package lab_2.zad1.backTracking;
 
-public abstract class ProblemSolver {
+import lab_2.zad1.NoMorePossibleFieldException;
 
-    public Row[] rows;
+public abstract class BackwardsProblemSolver {
+
+    public RowBacktracking[] rowBacktrackings;
     public int iterationsInRow;
 
 
@@ -20,9 +22,9 @@ public abstract class ProblemSolver {
         fetchPossibleFields(rowIndex, iteration);
         try {
             int nextPossibleField = getNextPossibleField(rowIndex);
-            rows[rowIndex].field = nextPossibleField;
-            rows[rowIndex].addTakenField(nextPossibleField);
-            rows[rowIndex].addValueToField(iteration, nextPossibleField);
+            rowBacktrackings[rowIndex].field = nextPossibleField;
+            rowBacktrackings[rowIndex].addTakenField(nextPossibleField);
+            rowBacktrackings[rowIndex].addValueToField(iteration, nextPossibleField);
         }catch (NoMorePossibleFieldException e){
             throw e;
         }
@@ -33,9 +35,9 @@ public abstract class ProblemSolver {
 
 
     public void fetchPossibleFields(int rowIndex, int iteration){
-        for(int field = 0; field < rows.length; field++) {
+        for(int field = 0; field < rowBacktrackings.length; field++) {
             if (validateField(rowIndex, field, iteration)) {
-                rows[rowIndex].addAvailableField(field);
+                rowBacktrackings[rowIndex].addAvailableField(field);
             }
         }
     }
@@ -55,23 +57,23 @@ public abstract class ProblemSolver {
         }
     }
 
-    public abstract Row clearRowAfterReturn(Row row);
+    public abstract RowBacktracking clearRowAfterReturn(RowBacktracking rowBacktracking);
 
     public void initRows(){
-        for (int i = 0; i < rows.length; i++){
-            rows[i] = new Row(rows.length);
+        for (int i = 0; i < rowBacktrackings.length; i++){
+            rowBacktrackings[i] = new RowBacktracking(rowBacktrackings.length);
         }
     }
 
     public void tryToFixPreviousRow(int previousRowIndex, int iteration) throws NoMorePossibleFieldException{
-        int nextPossibleField = rows[previousRowIndex].getNextPossibleField();
-        int previouslyTakenField = rows[previousRowIndex].field;
+        int nextPossibleField = rowBacktrackings[previousRowIndex].getNextPossibleField();
+        int previouslyTakenField = rowBacktrackings[previousRowIndex].field;
 
-        rows[previousRowIndex].field = nextPossibleField;
-        rows[previousRowIndex].releaseTakenField(previouslyTakenField);
-        rows[previousRowIndex].releaseValueFromField(previouslyTakenField);
-        rows[previousRowIndex].addTakenField(nextPossibleField);
-        rows[previousRowIndex].addValueToField(iteration, nextPossibleField);
+        rowBacktrackings[previousRowIndex].field = nextPossibleField;
+        rowBacktrackings[previousRowIndex].releaseTakenField(previouslyTakenField);
+        rowBacktrackings[previousRowIndex].releaseValueFromField(previouslyTakenField);
+        rowBacktrackings[previousRowIndex].addTakenField(nextPossibleField);
+        rowBacktrackings[previousRowIndex].addValueToField(iteration, nextPossibleField);
     }
 
 }
