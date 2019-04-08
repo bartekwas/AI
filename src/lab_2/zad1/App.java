@@ -6,7 +6,7 @@ import lab_2.zad1.forwardChecking.ForwardCheckingSolver;
 public class App {
 
     public static int SIZE =4;
-    public static Problem problem = Problem.QUEENS_PROBLEM;
+    public static Problem problem = Problem.LATIN_SQUARE_PROBLEM;
     public static Method method = Method.FORWARDCHECKING;
 
     public static void main(String[] args){

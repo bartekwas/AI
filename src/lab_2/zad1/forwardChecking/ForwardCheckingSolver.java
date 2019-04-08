@@ -39,6 +39,7 @@ private void iterateForAllValues(){
     for(int iteration = 0; iteration < forwardCheckingProblemSolverProblemSolver.getIterationsInRow(); iteration++) {
         try{
             startIterationFromIndex(0, iteration);
+            CONTINUE_RECURSION = true;
         }catch (Exception ex){
             System.out.println("test");
         }
@@ -51,7 +52,6 @@ private void iterateForAllValues(){
     private void startIterationFromIndex(int i, int iteration) throws Exception{
         if(CONTINUE_RECURSION) {
             for (; i < SIZE; i++) {
-
                 try {
                     forwardCheckingProblemSolverProblemSolver.findAllAllowedFields(i, iteration);
                     if (i == SIZE - 1) {

@@ -52,6 +52,7 @@ public abstract class ForwardCheckingProblemSolver {
 
     public void fetchPossibleFieldsForFirstRow(int rowIndex, int iteration){
         if(rowIndex == 0){
+            clearRowAfterReturn(rowsForward[0]);
             fetchPossibleFields(rowIndex, iteration);
         }
     }

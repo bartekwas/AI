@@ -15,6 +15,9 @@ public class LatinSquareForwardCheckingProblemSolver extends ForwardCheckingProb
 
     @Override
     public boolean validateInSpecificProblem(int field, int i, int rowIndex, int iteration) {
+        if(rowsForward[i].field == null){
+            return false;
+        }
         return !(!(rowsForward[rowIndex].checkIfFieldAlreadyBeenTaken(field)) && !(rowsForward[i].field == field));
     }
 
