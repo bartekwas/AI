@@ -40,25 +40,26 @@ public class OueensForwardCheckingProblemSolver extends ForwardCheckingProblemSo
 
 
     public void printResult() {
-        for (int i = 0; i < rowsForward.length; i++) {
-            if (rowsForward[i] == null || rowsForward[i].field == null) {
-                for (int k = 0; k < rowsForward.length; k++) {
-                    System.out.print("x ");
-                }
-                System.out.println("");
-            } else {
-                for (int fieldsInRow = 0; fieldsInRow < rowsForward.length; fieldsInRow++) {
-                    if (rowsForward[i].field == fieldsInRow) {
-                        System.out.print("Q ");
-                    } else {
-                        System.out.print("x ");
-                    }
-                }
-                System.out.println("");
-            }
-
-        }
-        System.out.println("");
+        //System.out.print(counter);
+//        for (int i = 0; i < rowsForward.length; i++) {
+//            if (rowsForward[i] == null || rowsForward[i].field == null) {
+//                for (int k = 0; k < rowsForward.length; k++) {
+//                    System.out.print("x ");
+//                }
+//                System.out.println("");
+//            } else {
+//                for (int fieldsInRow = 0; fieldsInRow < rowsForward.length; fieldsInRow++) {
+//                    if (rowsForward[i].field == fieldsInRow) {
+//                        System.out.print("Q ");
+//                    } else {
+//                        System.out.print("x ");
+//                    }
+//                }
+//                System.out.println("");
+//            }
+//
+//        }
+//        System.out.println("");
     }
 
     @Override

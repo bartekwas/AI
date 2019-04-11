@@ -3,8 +3,6 @@ package lab_2.zad1.backTracking;
 import lab_2.zad1.NoMorePossibleFieldException;
 
 public class OueensBackwardsProblemSolver extends BackwardsProblemSolver {
-
-
     public OueensBackwardsProblemSolver(RowBacktracking[] rowBacktrackings){
         this.rowBacktrackings = rowBacktrackings;
         this.iterationsInRow = 1;
@@ -36,24 +34,25 @@ public class OueensBackwardsProblemSolver extends BackwardsProblemSolver {
 
 
     public void printResult() {
-        for (int i = 0; i < rowBacktrackings.length; i++) {
-            if (rowBacktrackings[i] == null || rowBacktrackings[i].field == null) {
-                for (int k = 0; k < rowBacktrackings.length; k++) {
-                    System.out.print("x ");
-                }
-                System.out.println("");
-            } else {
-                for (int fieldsInRow = 0; fieldsInRow < rowBacktrackings.length; fieldsInRow++) {
-                    if (rowBacktrackings[i].field == fieldsInRow) {
-                        System.out.print("Q ");
-                    } else {
-                        System.out.print("x ");
-                    }
-                }
-                System.out.println("");
-            }
-
-        }
+        //System.out.print(counter);
+//        for (int i = 0; i < rowBacktrackings.length; i++) {
+//            if (rowBacktrackings[i] == null || rowBacktrackings[i].field == null) {
+//                for (int k = 0; k < rowBacktrackings.length; k++) {
+//                    System.out.print("x ");
+//                }
+//                System.out.println("");
+//            } else {
+//                for (int fieldsInRow = 0; fieldsInRow < rowBacktrackings.length; fieldsInRow++) {
+//                    if (rowBacktrackings[i].field == fieldsInRow) {
+//                        System.out.print("Q ");
+//                    } else {
+//                        System.out.print("x ");
+//                    }
+//                }
+//                System.out.println("");
+//            }
+//
+//        }
         System.out.println("");
     }
 

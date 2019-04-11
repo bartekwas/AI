@@ -3,15 +3,19 @@ package lab_2.zad1;
 import lab_2.zad1.backTracking.BackwardsSolver;
 import lab_2.zad1.forwardChecking.ForwardCheckingSolver;
 
+import java.time.LocalDateTime;
+
 public class App {
 
-    public static int SIZE =4;
+    public static int SIZE =6;
     public static Problem problem = Problem.LATIN_SQUARE_PROBLEM;
     public static Method method = Method.FORWARDCHECKING;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        switch(method){
+
+        System.out.println("LATINS PROBLEM, BACKTRACKING, SIZE " + SIZE);
+        switch (method) {
             case BACKTRACKING:
                 BackwardsSolver backwardsSolver = new BackwardsSolver(SIZE, problem);
                 backwardsSolver.solveProblemBackwardsChecking();
@@ -21,7 +25,30 @@ public class App {
                 forwardCheckingSolver.solveProblemForwardcheckingChecking();
                 break;
         }
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
 
+//        for(int i =4; i<17; i++) {
+//            long startDateTime = System.currentTimeMillis();
+//            SIZE = i;
+//            //System.out.print(SIZE + " ");
+//            switch (method) {
+//                case BACKTRACKING:
+//                    BackwardsSolver backwardsSolver = new BackwardsSolver(SIZE, problem);
+//                    backwardsSolver.solveProblemBackwardsChecking();
+//                    break;
+//                case FORWARDCHECKING:
+//                    ForwardCheckingSolver forwardCheckingSolver = new ForwardCheckingSolver(SIZE, problem);
+//                    forwardCheckingSolver.solveProblemForwardcheckingChecking();
+//                    break;
+//            }
+//            long endDateTime = System.currentTimeMillis();
+//            //System.out.println(" " + (endDateTime - startDateTime));
+//        }
     }
 
 

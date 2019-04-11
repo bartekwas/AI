@@ -6,6 +6,7 @@ public abstract class BackwardsProblemSolver {
 
     public RowBacktracking[] rowBacktrackings;
     public int iterationsInRow;
+    public int counter = 0;
 
 
 
@@ -22,6 +23,7 @@ public abstract class BackwardsProblemSolver {
         fetchPossibleFields(rowIndex, iteration);
         try {
             int nextPossibleField = getNextPossibleField(rowIndex);
+            counter ++;
             rowBacktrackings[rowIndex].field = nextPossibleField;
             rowBacktrackings[rowIndex].addTakenField(nextPossibleField);
             rowBacktrackings[rowIndex].addValueToField(iteration, nextPossibleField);
@@ -66,12 +68,13 @@ public abstract class BackwardsProblemSolver {
     }
 
     public void tryToFixPreviousRow(int previousRowIndex, int iteration) throws NoMorePossibleFieldException{
-        int nextPossibleField = rowBacktrackings[previousRowIndex].getNextPossibleField();
         int previouslyTakenField = rowBacktrackings[previousRowIndex].field;
-
-        rowBacktrackings[previousRowIndex].field = nextPossibleField;
         rowBacktrackings[previousRowIndex].releaseTakenField(previouslyTakenField);
         rowBacktrackings[previousRowIndex].releaseValueFromField(previouslyTakenField);
+
+        int nextPossibleField = rowBacktrackings[previousRowIndex].getNextPossibleField();
+        rowBacktrackings[previousRowIndex].field = nextPossibleField;
+
         rowBacktrackings[previousRowIndex].addTakenField(nextPossibleField);
         rowBacktrackings[previousRowIndex].addValueToField(iteration, nextPossibleField);
     }

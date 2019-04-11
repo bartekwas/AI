@@ -7,8 +7,8 @@ public class BackwardsSolver {
 
 public final int SIZE;
 private final Problem problem;
-private int counter = 0;
 private BackwardsProblemSolver backwardsProblemSolver;
+    public boolean CONTINUE_RECURSION = true;
 
 public BackwardsSolver(int size, Problem problem) {
     this.SIZE = size;
@@ -29,7 +29,7 @@ public BackwardsSolver(int size, Problem problem) {
 public void solveProblemBackwardsChecking(){
 
     iterateForAllValues();
-    System.out.println("Iterations: " + counter);
+
     backwardsProblemSolver.printResult();
 
 
@@ -38,6 +38,7 @@ public void solveProblemBackwardsChecking(){
 private void iterateForAllValues(){
     for(int iteration = 0; iteration < backwardsProblemSolver.getIterationsInRow(); iteration++) {
         startIterationFromIndex(0, iteration);
+        CONTINUE_RECURSION = true;
     }
 
 
@@ -45,12 +46,15 @@ private void iterateForAllValues(){
 }
 
     private void startIterationFromIndex(int i, int iteration){
-        counter++;
-    for (; i < SIZE; i++) {
-                try {
 
+        for (; i < SIZE; i++) {
+            if (CONTINUE_RECURSION) {
+                try {
                     backwardsProblemSolver.rowBacktrackings[i] = backwardsProblemSolver.clearRowAfterReturn(backwardsProblemSolver.rowBacktrackings[i]);
                     backwardsProblemSolver.findAllAllowedFields(i, iteration);
+                    if (i == SIZE - 1) {
+                        CONTINUE_RECURSION = false;
+                    }
                 } catch (NoMorePossibleFieldException ex) {
                     int j = i - 1;
                     while (j >= 0) {
@@ -64,6 +68,7 @@ private void iterateForAllValues(){
                     }
                 }
             }
+        }
     }
 
 

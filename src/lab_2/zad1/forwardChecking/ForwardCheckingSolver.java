@@ -29,7 +29,6 @@ public ForwardCheckingSolver(int size, Problem problem) {
 public void solveProblemForwardcheckingChecking(){
 
     iterateForAllValues();
-    String justForTest = "test";
     forwardCheckingProblemSolverProblemSolver.printResult();
 
 
@@ -41,7 +40,7 @@ private void iterateForAllValues(){
             startIterationFromIndex(0, iteration);
             CONTINUE_RECURSION = true;
         }catch (Exception ex){
-            System.out.println("test");
+            //System.out.println("test");
         }
     }
 
@@ -50,6 +49,7 @@ private void iterateForAllValues(){
 }
 
     private void startIterationFromIndex(int i, int iteration) throws Exception{
+
         if(CONTINUE_RECURSION) {
             for (; i < SIZE; i++) {
                 try {

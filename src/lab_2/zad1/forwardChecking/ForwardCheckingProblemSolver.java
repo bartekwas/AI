@@ -8,6 +8,8 @@ public abstract class ForwardCheckingProblemSolver {
     public RowForward[] rowsForward;
     public int iterationsInRow;
 
+    public int counter = 0;
+
 
 
     public abstract boolean validateInSpecificProblem(int field, int i, int rowIndex, int iteration);
@@ -24,6 +26,7 @@ public abstract class ForwardCheckingProblemSolver {
         try {
             int nextPossibleField = getNextPossibleField(rowIndex);
             rowsForward[rowIndex].field = nextPossibleField;
+            counter ++;
             for(int row = rowIndex+1; row < rowsForward.length; row++){
                 rowsForward[row] = clearRowAfterReturn(rowsForward[row]);
                 fetchPossibleFields(row, iteration);
@@ -81,16 +84,18 @@ public abstract class ForwardCheckingProblemSolver {
     }
 
     public void tryToFixPreviousRow(int previousRowIndex, int iteration) throws NoMorePossibleFieldException{
- //       rowsForward[previousRowIndex].releaseValueFromAvailableField();
+        rowsForward[previousRowIndex].releaseValueFromAvailableField();
+        int previouslyTakenField = rowsForward[previousRowIndex].field;
+        rowsForward[previousRowIndex].releaseTakenField(previouslyTakenField);
+        rowsForward[previousRowIndex].releaseValueFromField(previouslyTakenField);
 
-//        int nextPossibleField = rowsForward[previousRowIndex].getNextPossibleField();
-//        int previouslyTakenField = rowsForward[previousRowIndex].field;
-//
-//        rowsForward[previousRowIndex].field = nextPossibleField;
-//        rowsForward[previousRowIndex].releaseTakenField(previouslyTakenField);
-//        rowsForward[previousRowIndex].releaseValueFromField(previouslyTakenField);
-//        rowsForward[previousRowIndex].addTakenField(nextPossibleField);
-//        rowsForward[previousRowIndex].addValueToField(iteration, nextPossibleField);
+        int nextPossibleField = rowsForward[previousRowIndex].getNextPossibleField();
+
+
+        rowsForward[previousRowIndex].field = nextPossibleField;
+
+        rowsForward[previousRowIndex].addTakenField(nextPossibleField);
+        rowsForward[previousRowIndex].addValueToField(iteration, nextPossibleField);
     }
 
 }

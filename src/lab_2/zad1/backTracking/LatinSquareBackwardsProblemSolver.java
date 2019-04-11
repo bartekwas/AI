@@ -2,7 +2,10 @@ package lab_2.zad1.backTracking;
 
 import lab_2.zad1.NoMorePossibleFieldException;
 
+
+
 public class LatinSquareBackwardsProblemSolver extends BackwardsProblemSolver {
+
 
 
     public LatinSquareBackwardsProblemSolver(RowBacktracking[] rowBacktrackings){
@@ -30,22 +33,23 @@ public class LatinSquareBackwardsProblemSolver extends BackwardsProblemSolver {
 
 
     public void printResult() {
-    for(RowBacktracking rowBacktracking : rowBacktrackings){
-        for(int value: rowBacktracking.valuesOnFields){
-            System.out.print(value + " ");
-        }
-        System.out.println("");
-    }
+       System.out.println(counter);
+//        for(RowBacktracking rowBacktracking : rowBacktrackings){
+//        for(int value: rowBacktracking.valuesOnFields){
+//            System.out.print(value + " ");
+//        }
+//        System.out.println("");
+//    }
     }
 
     @Override
     public int getNextPossibleField(int rowIndex) throws NoMorePossibleFieldException {
 
-        for(int i = rowIndex; i< rowBacktrackings.length; i++) {
-            if (rowBacktrackings[rowIndex].availableFields.contains(new Integer(i))){
-                return i;
-            }
-        }
+//        for(int i = rowIndex; i< rowBacktrackings.length; i++) {
+//            if (rowBacktrackings[rowIndex].availableFields.contains(new Integer(i))){
+//                return i;
+//            }
+//        }
         return rowBacktrackings[rowIndex].getNextPossibleField();
     }
 

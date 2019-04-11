@@ -34,7 +34,8 @@ public class LatinSquareForwardCheckingProblemSolver extends ForwardCheckingProb
 
 
     public void printResult() {
-    for(RowForward rowBacktracking : rowsForward){
+        System.out.println(+ counter);
+        for(RowForward rowBacktracking : rowsForward){
         for(int value: rowBacktracking.valuesOnFields){
             System.out.print(value + " ");
         }
@@ -44,12 +45,12 @@ public class LatinSquareForwardCheckingProblemSolver extends ForwardCheckingProb
 
     @Override
     public int getNextPossibleField(int rowIndex) throws NoMorePossibleFieldException {
-
-        for(int i = rowIndex; i< rowsForward.length; i++) {
-            if (rowsForward[rowIndex].availableFields.contains(new Integer(i))){
-                return i;
-            }
-        }
+//
+//        for(int i = rowIndex; i< rowsForward.length; i++) {
+//            if (rowsForward[rowIndex].availableFields.contains(new Integer(i))){
+//                return i;
+//            }
+//        }
         return rowsForward[rowIndex].getNextPossibleField();
     }
 
