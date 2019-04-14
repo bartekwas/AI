@@ -34,12 +34,12 @@ public class LatinSquareBackwardsProblemSolver extends BackwardsProblemSolver {
 
     public void printResult() {
        System.out.println(counter);
-//        for(RowBacktracking rowBacktracking : rowBacktrackings){
-//        for(int value: rowBacktracking.valuesOnFields){
-//            System.out.print(value + " ");
-//        }
-//        System.out.println("");
-//    }
+        for(RowBacktracking rowBacktracking : rowBacktrackings){
+        for(int value: rowBacktracking.valuesOnFields){
+            System.out.print(value + " ");
+        }
+        System.out.println("");
+    }
     }
 
     @Override

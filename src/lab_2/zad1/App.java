@@ -7,14 +7,14 @@ import java.time.LocalDateTime;
 
 public class App {
 
-    public static int SIZE =6;
+    public static int SIZE =10;
     public static Problem problem = Problem.LATIN_SQUARE_PROBLEM;
-    public static Method method = Method.FORWARDCHECKING;
+    public static Method method = Method.BACKTRACKING;
 
     public static void main(String[] args) {
 
 
-        System.out.println("LATINS PROBLEM, BACKTRACKING, SIZE " + SIZE);
+        System.out.println(problem.toString() + " " + method.toString() + " "+ SIZE);
         switch (method) {
             case BACKTRACKING:
                 BackwardsSolver backwardsSolver = new BackwardsSolver(SIZE, problem);

@@ -35,12 +35,12 @@ public class LatinSquareForwardCheckingProblemSolver extends ForwardCheckingProb
 
     public void printResult() {
         System.out.println(+ counter);
-        for(RowForward rowBacktracking : rowsForward){
-        for(int value: rowBacktracking.valuesOnFields){
-            System.out.print(value + " ");
-        }
+//        for(RowForward rowBacktracking : rowsForward){
+//        for(int value: rowBacktracking.valuesOnFields){
+//            System.out.print(value + " ");
+//        }
         System.out.println("");
-    }
+    //}
     }
 
     @Override

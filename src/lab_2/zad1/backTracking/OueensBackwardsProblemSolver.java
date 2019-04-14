@@ -34,25 +34,25 @@ public class OueensBackwardsProblemSolver extends BackwardsProblemSolver {
 
 
     public void printResult() {
-        //System.out.print(counter);
-//        for (int i = 0; i < rowBacktrackings.length; i++) {
-//            if (rowBacktrackings[i] == null || rowBacktrackings[i].field == null) {
-//                for (int k = 0; k < rowBacktrackings.length; k++) {
-//                    System.out.print("x ");
-//                }
-//                System.out.println("");
-//            } else {
-//                for (int fieldsInRow = 0; fieldsInRow < rowBacktrackings.length; fieldsInRow++) {
-//                    if (rowBacktrackings[i].field == fieldsInRow) {
-//                        System.out.print("Q ");
-//                    } else {
-//                        System.out.print("x ");
-//                    }
-//                }
-//                System.out.println("");
-//            }
-//
-//        }
+        System.out.println("Iteracje: " + counter);
+        for (int i = 0; i < rowBacktrackings.length; i++) {
+            if (rowBacktrackings[i] == null || rowBacktrackings[i].field == null) {
+                for (int k = 0; k < rowBacktrackings.length; k++) {
+                    System.out.print("x ");
+                }
+                System.out.println("");
+            } else {
+                for (int fieldsInRow = 0; fieldsInRow < rowBacktrackings.length; fieldsInRow++) {
+                    if (rowBacktrackings[i].field == fieldsInRow) {
+                        System.out.print("Q ");
+                    } else {
+                        System.out.print("x ");
+                    }
+                }
+                System.out.println("");
+            }
+
+        }
         System.out.println("");
     }
 
