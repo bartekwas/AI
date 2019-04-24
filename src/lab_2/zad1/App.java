@@ -7,9 +7,10 @@ import java.time.LocalDateTime;
 
 public class App {
 
-    public static int SIZE =10;
+    public static int SIZE =8;
     public static Problem problem = Problem.LATIN_SQUARE_PROBLEM;
     public static Method method = Method.BACKTRACKING;
+
 
     public static void main(String[] args) {
 
