@@ -24,20 +24,20 @@ public class App_lab3 {
      ****************************************************************************************/
 
 
-    private static final int BOARD_SIZE                             =       4;
+    private static final int BOARD_SIZE                             =       7;
     private static final MoveTimePrinter moveTimePrinter            =       MoveTimePrinter.YES;
 
     private static final PlayerChooser playerOne                    =       PlayerChooser.COMPUTER;
-    private static final AlgorithmChooser playerOneAlgorithm        =       AlgorithmChooser.MINMAX;
+    private static final AlgorithmChooser playerOneAlgorithm        =       AlgorithmChooser.ALFABETA;
     private static final EvaluationChooser playerOneEvaluation      =       EvaluationChooser.POINTS_EVALUATION;
     private static final OrderChooser playerOneOrder                =       OrderChooser.POINTS_ORDER;
-    private static final int playerOneDepth                         =       4;
+    private static final int playerOneDepth                         =       3;
 
     private static final PlayerChooser playerTwo                    =       PlayerChooser.COMPUTER;
-    private static final AlgorithmChooser playerTwoAlgorithm        =       AlgorithmChooser.ALFABETA;
+    private static final AlgorithmChooser playerTwoAlgorithm        =       AlgorithmChooser.MINMAX;
     private static final EvaluationChooser playerTwoEvaluation      =       EvaluationChooser.POINTS_EVALUATION;
     private static final OrderChooser playerTwoOrder                =       OrderChooser.POINTS_ORDER;
-    private static final int playerTwoDepth                         =       4;
+    private static final int playerTwoDepth                         =       3;
 
 
 

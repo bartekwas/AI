@@ -45,9 +45,9 @@ public class Game {
     public void addPointsBasedOnMove(int row, int column) {
         int pointsToAdd = GameReferee.calculatePoints(board, row, column);
 
-        if (playerOnMove == PlayerSymbol.X) {
+        if (playerOnMove == PlayerSymbol.O) {
             oPoints += pointsToAdd;
-        } else if (playerOnMove == PlayerSymbol.O) {
+        } else if (playerOnMove == PlayerSymbol.X) {
             xPoints += pointsToAdd;
         }
 

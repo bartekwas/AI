@@ -13,9 +13,9 @@ public class PointsEvaluation implements Evaluation {
         int white = game.getoPoints();
         int black = game.getxPoints();
 
-        if (color == PlayerSymbol.X) {
+        if (color == PlayerSymbol.O) {
             return white - black;
-        } else if (color == PlayerSymbol.O) {
+        } else if (color == PlayerSymbol.X) {
             return black - white;
         }
 

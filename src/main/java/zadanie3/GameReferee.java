@@ -68,7 +68,9 @@ class GameReferee {
 
         pointsToAdd += checkVertical(board, column);
         pointsToAdd += checkHorizontal(board, row);
-        pointsToAdd += checkCross(board, row, column);
+        if (checkCross(board, row, column) > 1) {
+            pointsToAdd += checkCross(board, row, column);
+        }
 
 
         return pointsToAdd;
